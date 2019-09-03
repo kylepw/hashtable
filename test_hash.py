@@ -1,4 +1,4 @@
-from hash import HashTable, Node
+from hash import HashTable, Node, to_hash
 import unittest
 
 
@@ -12,9 +12,7 @@ class TestNode(unittest.TestCase):
         self.assertEqual(self.node2.next, self.node3)
         self.assertEqual(self.node1.next.next, self.node3)
 
-
 class TestHashTable(unittest.TestCase):
-
     def setUp(self):
         self.ht = HashTable()
 
@@ -22,18 +20,26 @@ class TestHashTable(unittest.TestCase):
         self.node3 = Node('mah', 'yo', self.node4)
         self.node2 = Node('geee', 'bahhh', self.node3)
         self.node1 = Node('key', 'value', self.node2)
-        head0 = self.node1
-        self.ht.db.append(head0)
+        self.ht.db.append(self.node1)
+        self.ht.hash_map.update([(to_hash(key), 0) for key in ('key', 'geee', 'mah', 'veloce')])
 
         self.node8 = Node('monkey', 565.98)
         self.node7 = Node('iphone', 'I do not know.', self.node8)
         self.node6 = Node('abacus', 'YES', self.node7)
         self.node5 = Node('man', {1, 2, 3}, self.node6)
-        head1 = self.node5
-        self.ht.db.append(head1)
+        self.ht.db.append(self.node5)
+        self.ht.hash_map.update([(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')])
 
-    def test_write(self):
-        pass
+    def test_set(self):
+        self.assertIsNone(self.ht.set())
+
+        self.assertEqual(self.ht._get_node(0, 'geee').value, 'bahhh')
+        self.ht.set('geee', 'wiz!')
+        self.assertEqual(self.ht._get_node(0, 'geee').value, 'wiz!')
+
+        self.assertEqual(self.ht._get_node(1, 'monkey').value, 565.98)
+        self.ht.set('monkey', 'mammal')
+        self.assertEqual(self.ht._get_node(1, 'monkey').value, 'mammal')
 
     def test_get_node(self):
         self.assertEqual(self.ht._get_node(0, 'key'), self.node1)

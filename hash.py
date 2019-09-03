@@ -9,6 +9,11 @@ def get_index(max=None):
         return None
     return randrange(max)
 
+def to_key(hash_val):
+    """Convert hash `int` value to :obj:`str"""
+    # !!!TODO!!!
+    pass
+
 def to_hash(key, length=10):
     """Convert :obj:`str` to hash `int` value"""
     return int(hashlib.md5(key.encode()).hexdigest(), 16) % (10 ** length)
@@ -24,7 +29,6 @@ class Node:
     def __repr__(self):
         return f'Node {{{self.key}:{self.value}}} -> {self.next}'
 
-
 class HashTable:
     def __init__(self):
         # array with linked nodes at each index
@@ -32,20 +36,21 @@ class HashTable:
         # Map hash value to array index
         self.hash_map = {}
 
-    def read(self, key):
+    def get(self, key):
+        # !!!TODO!!!
         pass
 
-    def write(self, key=None, value=None):
+    def set(self, key=None, value=None):
         if key is None:
             return None
         hash_key = to_hash(key)
         if hash_key in self.hash_map:
-            node = self._get_node(index=self.hash_map[hash_key], key=key)
-        # Map hash to random index
-        index = get_index(len(self.db)+1)
-        node = self._write_node(index, key, value)
-        self.hash_map[hash_key] = index
-
+            node = self._write_node(index=self.hash_map[hash_key], key=key, value=value)
+        else:
+            # Map hash to random index
+            index = get_index(len(self.db)+1)
+            node = self._write_node(index, key, value)
+            self.hash_map[hash_key] = index
         return node
 
     def _get_node(self, index, key):
