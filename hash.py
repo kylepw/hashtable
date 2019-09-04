@@ -12,10 +12,8 @@
     Node {hey: 123}
     >>> t.get('hey')
     123
+
 """
-from random import randrange
-
-
 def to_hash(key, length=10):
     """Convert key to hash value.
 
@@ -56,6 +54,9 @@ class LinkedList:
     def __repr__(self):
         return f'LinkedList <{self.head}> -> ...'
 
+    def __iter__(self):
+        return self
+
     def __next__(self):
         if self.current is not None:
             node, self.current = self.current, self.current.next
@@ -69,9 +70,6 @@ class LinkedList:
         for _ in self:
             count += 1
         return count
-
-    def __iter__(self):
-        return self
 
     def _append(self, key, value):
         """Append node to end of linked list"""
@@ -114,24 +112,24 @@ class Hashtable:
 
         `get` flow:
         - Compute 'key' hash value
-        - Map hash value to index in array
+        - Map hash value to index in bucket
         - Traverse linked list at index
         - Return value of 'key' node or None
 
         `set` flow:
         - Convert 'key' to hash value
-        - Map hash value to index in array (create index if necessary)
+        - Map hash value to index in bucket (add linked list if necessary)
         - Traverse linked list at index
         - Set new value at 'key' node
         - If no 'key' node, append new 'key' node to end list
     """
 
     def __init__(self, size=100):
-        # Number of buckets
+        # Number of buckets (linked lists)
         self.size = size
         # Bucket of linked lists
         self._buckets = [None for i in range(size)]
-        # Map hash values to array indexes
+        # Map of hash values to bucket indices
         self._hash_map = {}
 
     def __repr__(self):
@@ -155,7 +153,7 @@ class Hashtable:
             lst = self._get_list(index)
             if lst and lst.get(key):
                 values.append(lst.get(key).value)
-        return values[0] if len(values) == 1 else (tuple(values) or None)
+        return values[0] if len(values) == 1 else tuple(values) or None
 
     def set(self, key=None, value=None):
         if key is None:
