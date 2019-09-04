@@ -126,9 +126,11 @@ class Hashtable:
         - If no 'key' node, append new 'key' node to end list
     """
 
-    def __init__(self):
-        # array of linked-lists
-        self._lists = []
+    def __init__(self, size=100):
+        # Number of buckets
+        self.size = size
+        # Bucket of linked lists
+        self._buckets = [None for i in range(size)]
         # Map hash values to array indexes
         self._hash_map = {}
 
@@ -138,7 +140,7 @@ class Hashtable:
     def _get_list(self, index):
         """Return `LinkedList` obj at `index` or None"""
         try:
-            return self._lists[index]
+            return self._buckets[index]
         except IndexError:
             return None
 
@@ -153,7 +155,7 @@ class Hashtable:
             lst = self._get_list(index)
             if lst and lst.get(key):
                 values.append(lst.get(key).value)
-        return values[0] if len(values) == 1 else tuple(values) or None
+        return values[0] if len(values) == 1 else (tuple(values) or None)
 
     def set(self, key=None, value=None):
         if key is None:
@@ -163,20 +165,19 @@ class Hashtable:
             lst = self._get_list(index=self._hash_map[hash_key])
             node = lst.set(key, value)
         else:
-            # Map hash to random index
-            index = randrange(len(self._lists) + 1)
-            lst = self._get_list(index)
-            if not lst:
-                self._lists.append(LinkedList())
-                lst = self._lists[-1]
-            node = lst.set(key, value)
+            # Map hash to index
+            index = hash_key % self.size
+            if self._get_list(index) is None:
+                self._buckets[index] = LinkedList()
+            node = self._buckets[index].set(key, value)
             self._hash_map[hash_key] = index
         return node
 
     def keys(self):
         """Return all key values in hash table"""
         keys = []
-        if self._lists:
-            for lst in self._lists:
-                keys.extend([node.key for node in lst if node])
+        if self._buckets:
+            for lst in self._buckets:
+                if lst:
+                    keys.extend([node.key for node in lst if node])
         return tuple(keys)

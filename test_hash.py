@@ -64,7 +64,7 @@ class TestHashTable(unittest.TestCase):
         lst1.head.next = Node('geee', 'bahhh')
         lst1.head.next.next = Node('mah', 'yo')
         lst1.head.next.next.next = Node('veloce', 123)
-        self.ht._lists.append(lst1)
+        self.ht._buckets[0] = lst1
         self.ht._hash_map.update(
             [(to_hash(key), 0) for key in ('key', 'geee', 'mah', 'veloce')]
         )
@@ -73,7 +73,7 @@ class TestHashTable(unittest.TestCase):
         lst2.head.next = Node('abacus', 'YES')
         lst2.head.next.next = Node('iphone', 'I do not know.')
         lst2.head.next.next.next = Node('monkey', 565.98)
-        self.ht._lists.append(lst2)
+        self.ht._buckets[1] = lst2
         self.ht._hash_map.update(
             [(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')]
         )
