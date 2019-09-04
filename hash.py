@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import hashlib
 from random import randrange
 
 
@@ -11,7 +10,7 @@ def gen_index(max=None):
 
 def to_hash(key, length=10):
     """Convert :obj:`str` to hash `int` value"""
-    return int(hashlib.md5(key.encode()).hexdigest(), 16) % (10 ** length)
+    return abs(hash(key)) % (10 ** length)
 
 
 class Node:
@@ -30,7 +29,7 @@ class LinkedList:
         self.head = head
 
     def __repr__(self):
-        return f'Linked-list: {{{self.head.key}: {self.head.value}}} -> {self.head.next}'
+        return f'Linked-list: {{{self.head}}} -> ...'
 
     def get(self, key):
         """Return :obj:`Node` with `key`"""
@@ -48,8 +47,8 @@ class LinkedList:
     def _append(self, key, value):
         node = self.head
         if node is None:
-            node = Node(key, value)
-            return node
+            self.head = Node(key, value)
+            return self.head
         else:
             while (node.next):
                 node = node.next
@@ -67,15 +66,24 @@ class LinkedList:
 
 class HashTable:
     """
-        Example of hash table.
+        Example of simple hash table implementation.
 
-        Get 'value' of 'key':
-        - Convert 'key' to hash value
-        - At array index associated with hash value
-        - Traverse linked list until 'key' node found
+        (Reference: Cracking the Coding Interview p.88)
+        >>> from hash import HashTable
+        >>> t = HashTable()
+        >>> t.get('hey')
+        >>> t.set('hey', 123)
+        Node {hey: 123}
+        >>> t.get('hey')
+        123
+
+        Get:
+        - Compute 'key' hash value
+        - Map hash value to index in array
+        - Traverse linked-list at index until 'key' node
         - Return value of node
 
-        Set 'value' of 'key':
+        Set:
         - Convert 'key' to hash value
         - Find array index associated with hash value
         - If no array index, map an index to hash value
@@ -122,6 +130,8 @@ class HashTable:
             if not lst:
                 self._db.append(LinkedList())
                 lst = self._db[-1]
+            print(lst)
             node = lst.set(key, value)
+            print(lst)
             self._hash_map[hash_key] = index
         return node

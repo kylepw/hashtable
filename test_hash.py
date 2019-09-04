@@ -63,6 +63,8 @@ class TestHashTable(unittest.TestCase):
         self.ht._db.append(lst2)
         self.ht._hash_map.update([(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')])
 
+        print(ht._hash_map)
+
     def test_set(self):
         self.assertIsNone(self.ht.set())
 
