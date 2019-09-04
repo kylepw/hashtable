@@ -50,15 +50,26 @@ class LinkedList:
     def __init__(self, head=None):
         # First node
         self.head = head
+        # Used for iteration
+        self.current = self.head
 
     def __repr__(self):
-        return f'Linked list: <{self.head}> -> ...'
+        return f'LinkedList <{self.head}> -> ...'
+
+    def __next__(self):
+        if self.current is not None:
+            node, self.current = self.current, self.current.next
+            return node
+        raise StopIteration
+
+    def __iter__(self):
+        return self
 
     def _append(self, key, value):
         """Append node to end of linked list"""
         node = self.head
         if node is None:
-            self.head = Node(key, value)
+            self.head = self.current = Node(key, value)
             return self.head
         else:
             while node.next:
@@ -113,7 +124,7 @@ class HashTable:
         self._hash_map = {}
 
     def __repr__(self):
-        return f'HashTable obj <{len(self._hash_map)} key/val pairs>'
+        return f'HashTable <{len(self._hash_map)} key/val pairs>'
 
     def _get_list(self, index):
         """Return `LinkedList` obj at `index` or None"""
@@ -148,3 +159,8 @@ class HashTable:
             node = lst.set(key, value)
             self._hash_map[hash_key] = index
         return node
+
+    def keys(self):
+        """Return all key values"""
+        lists = [self._get_list(lst) for lst in self._list]
+        return [to_key(k) for k in self._hash_map.keys()]
