@@ -75,7 +75,9 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(self.ht.get('monkey'), 'mammal')
 
         t = HashTable()
+        self.assertIsNone(t.get('hey'))
         t.set('hey', 'you')
+        self.assertIsNotNone(t.get('hey'))
 
     def test_get(self):
         self.assertIsNone(self.ht.get('ninjaturtles343'))
