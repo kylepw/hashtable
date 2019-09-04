@@ -10,7 +10,10 @@ def gen_index(max=None):
 
 def to_hash(key, length=10):
     """Convert :obj:`str` to hash `int` value"""
-    return abs(hash(key)) % (10 ** length)
+    try:
+        return abs(hash(key)) % (10 ** length)
+    except TypeError:
+        return abs(hash(str(key))) % (10 ** length)
 
 
 class Node:
@@ -130,8 +133,6 @@ class HashTable:
             if not lst:
                 self._db.append(LinkedList())
                 lst = self._db[-1]
-            print(lst)
             node = lst.set(key, value)
-            print(lst)
             self._hash_map[hash_key] = index
         return node

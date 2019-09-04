@@ -63,8 +63,6 @@ class TestHashTable(unittest.TestCase):
         self.ht._db.append(lst2)
         self.ht._hash_map.update([(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')])
 
-        print(ht._hash_map)
-
     def test_set(self):
         self.assertIsNone(self.ht.set())
 
@@ -87,3 +85,11 @@ class TestHashTable(unittest.TestCase):
 
         t = HashTable()
         self.assertIsNone(t.get('hey'))
+
+class TestUtilities(unittest.TestCase):
+    def setUp(self):
+        self.objs = (123, 'str', 123.5, {'a': 1}, (x for x in range(5)))
+
+    def test_to_hash(self):
+        for obj in self.objs:
+            to_hash(obj)
