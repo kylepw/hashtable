@@ -15,9 +15,9 @@ Like this: ::
     Node {jimmy: 54}
     >>> h.set('jasmine', 32.5)
     Node {jasmine: 32.5}
-    >>> h.get('jasmine')
-    32.5
+    >>> h.get('jasmine', 'jimmy')
+    (32.5, 54)
     >>> h.keys()
-    ['jimmy', 'jasmine']
+    ('jimmy', 'jasmine')
 
 
