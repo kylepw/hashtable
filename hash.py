@@ -142,14 +142,18 @@ class Hashtable:
         except IndexError:
             return None
 
-    def get(self, key):
-        hash_key = to_hash(key)
-        if hash_key not in self._hash_map:
-            return None
-        index = self._hash_map[hash_key]
-        lst = self._get_list(index)
-        if lst and lst.get(key):
-            return lst.get(key).value
+    def get(self, *keys):
+        """Get value(s) of key(s)"""
+        values = []
+        for key in keys:
+            hash_key = to_hash(key)
+            if hash_key not in self._hash_map:
+                continue
+            index = self._hash_map[hash_key]
+            lst = self._get_list(index)
+            if lst and lst.get(key):
+                values.append(lst.get(key).value)
+        return values[0] if len(values) == 1 else tuple(values) or None
 
     def set(self, key=None, value=None):
         if key is None:

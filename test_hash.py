@@ -100,6 +100,14 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(self.ht.get('monkey'), 565.98)
         self.assertEqual(self.ht.get('iphone'), 'I do not know.')
 
+        values = self.ht.get('geee', 'monkey', 'iphone')
+        self.assertEqual(len(values), 3)
+        self.assertEqual(values, ('bahhh', 565.98, 'I do not know.'))
+
+        a_wrong_value = self.ht.get('geee', 'shit3433', 'iphone')
+        self.assertEqual(len(a_wrong_value), 2)
+        self.assertEqual(a_wrong_value, ('bahhh', 'I do not know.'))
+
         t = Hashtable()
         self.assertIsNone(t.get('hey'))
 
