@@ -60,7 +60,15 @@ class LinkedList:
         if self.current is not None:
             node, self.current = self.current, self.current.next
             return node
+        # Reset
+        self.current = self.head
         raise StopIteration
+
+    def __len__(self):
+        count = 0
+        for _ in self:
+            count += 1
+        return count
 
     def __iter__(self):
         return self
@@ -69,7 +77,8 @@ class LinkedList:
         """Append node to end of linked list"""
         node = self.head
         if node is None:
-            self.head = self.current = Node(key, value)
+            self.head = Node(key, value)
+            self.current = self.head
             return self.head
         else:
             while node.next:
