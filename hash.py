@@ -1,9 +1,9 @@
-#!/usr/bin/env python
 """
     hash.py
     ~~~~~~~
+
     Simple hash table implementation.
-    Based on: Cracking the Coding Interview p.88
+    Based on: Cracking the Coding Interview, p.88
 
     >>> from hash import HashTable
     >>> t = HashTable()
@@ -34,6 +34,7 @@ def to_hash(key, length=10):
 
 class Node:
     """Linked list node"""
+
     def __init__(self, key, value, next_node=None):
         self.key = key
         self.value = value
@@ -42,8 +43,10 @@ class Node:
     def __repr__(self):
         return f'Node {{{self.key}: {self.value}}}'
 
+
 class LinkedList:
     """Linked list of nodes"""
+
     def __init__(self, head=None):
         # First node
         self.head = head
@@ -58,7 +61,7 @@ class LinkedList:
             self.head = Node(key, value)
             return self.head
         else:
-            while (node.next):
+            while node.next:
                 node = node.next
             node.next = Node(key, value)
             return node.next
@@ -70,7 +73,7 @@ class LinkedList:
             return None
         if node.key == key:
             return node
-        while (node):
+        while node:
             if node.key == key:
                 return node
             node = node.next
@@ -84,6 +87,7 @@ class LinkedList:
         else:
             node = self._append(key, value)
         return node
+
 
 class HashTable:
     """Represents simple hash table
@@ -101,9 +105,10 @@ class HashTable:
         - Set new value at 'key' node
         - If no 'key' node, append new 'key' node to end list
     """
+
     def __init__(self):
         # array of linked-lists
-        self._db = []
+        self._lists = []
         # Map hash values to array indexes
         self._hash_map = {}
 
@@ -111,9 +116,9 @@ class HashTable:
         return f'HashTable obj <{len(self._hash_map)} key/val pairs>'
 
     def _get_list(self, index):
-        """Return :obj:`LinkedList` or None"""
+        """Return `LinkedList` obj at `index` or None"""
         try:
-            return self._db[index]
+            return self._lists[index]
         except IndexError:
             return None
 
@@ -135,11 +140,11 @@ class HashTable:
             node = lst.set(key, value)
         else:
             # Map hash to random index
-            index = randrange(len(self._db)+1)
+            index = randrange(len(self._lists) + 1)
             lst = self._get_list(index)
             if not lst:
-                self._db.append(LinkedList())
-                lst = self._db[-1]
+                self._lists.append(LinkedList())
+                lst = self._lists[-1]
             node = lst.set(key, value)
             self._hash_map[hash_key] = index
         return node
