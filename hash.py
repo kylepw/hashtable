@@ -5,8 +5,8 @@
     Simple hash table implementation.
     Based on: Cracking the Coding Interview, p.88
 
-    >>> from hash import HashTable
-    >>> t = HashTable()
+    >>> from hash import Hashtable
+    >>> t = Hashtable()
     >>> t.get('hey')
     >>> t.set('hey', 123)
     Node {hey: 123}
@@ -109,7 +109,7 @@ class LinkedList:
         return node
 
 
-class HashTable:
+class Hashtable:
     """Represents simple hash table
 
         `get` flow:
@@ -133,7 +133,7 @@ class HashTable:
         self._hash_map = {}
 
     def __repr__(self):
-        return f'HashTable <{len(self._hash_map)} key/val pairs>'
+        return f'Hashtable <{len(self._hash_map)} key/val pairs>'
 
     def _get_list(self, index):
         """Return `LinkedList` obj at `index` or None"""
@@ -170,6 +170,9 @@ class HashTable:
         return node
 
     def keys(self):
-        """Return all key values"""
-        lists = [self._get_list(lst) for lst in self._list]
-        return [to_key(k) for k in self._hash_map.keys()]
+        """Return all key values in hash table"""
+        keys = []
+        if self._lists:
+            for lst in self._lists:
+                keys.extend([node.key for node in lst if node])
+        return keys

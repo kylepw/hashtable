@@ -1,4 +1,4 @@
-from hash import HashTable, LinkedList, Node, to_hash
+from hash import Hashtable, LinkedList, Node, to_hash
 import unittest
 
 
@@ -19,6 +19,15 @@ class TestLinkedList(unittest.TestCase):
         self.lst = LinkedList(head=Node('all', 'day'))
         self.lst.head.next = Node('another', 'one')
         self.lst.head.next.next = Node('last', 'entry')
+
+    def test_iter(self):
+        for node in self.lst:
+            self.assertEqual(type(node), Node)
+
+    def test_len(self):
+        self.assertEqual(len(self.lst), 3)
+
+        self.assertEqual(len(LinkedList()), 0)
 
     def test_get(self):
         self.assertIsNone(self.lst.get('lkjdlfjl3'))
@@ -49,7 +58,7 @@ class TestLinkedList(unittest.TestCase):
 
 class TestHashTable(unittest.TestCase):
     def setUp(self):
-        self.ht = HashTable()
+        self.ht = Hashtable()
 
         lst1 = LinkedList(head=Node('key', 'value'))
         lst1.head.next = Node('geee', 'bahhh')
@@ -80,7 +89,7 @@ class TestHashTable(unittest.TestCase):
         self.ht.set('monkey', 'mammal')
         self.assertEqual(self.ht.get('monkey'), 'mammal')
 
-        t = HashTable()
+        t = Hashtable()
         self.assertIsNone(t.get('hey'))
         t.set('hey', 'you')
         self.assertIsNotNone(t.get('hey'))
@@ -91,8 +100,15 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(self.ht.get('monkey'), 565.98)
         self.assertEqual(self.ht.get('iphone'), 'I do not know.')
 
-        t = HashTable()
+        t = Hashtable()
         self.assertIsNone(t.get('hey'))
+
+    def test_keys(self):
+        keys = self.ht.keys()
+        self.assertEqual(keys, ['key', 'geee', 'mah', 'veloce', 'man', 'abacus', 'iphone', 'monkey'])
+        self.assertEqual(len(keys), 8)
+
+        self.assertEqual(Hashtable().keys(), [])
 
 
 class TestUtilities(unittest.TestCase):
