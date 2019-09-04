@@ -8,7 +8,7 @@ def gen_index(max=None):
     if max is None:
         return None
     return randrange(max)
-    
+
 def to_hash(key, length=10):
     """Convert :obj:`str` to hash `int` value"""
     return int(hashlib.md5(key.encode()).hexdigest(), 16) % (10 ** length)
@@ -35,6 +35,8 @@ class LinkedList:
     def get(self, key):
         """Return :obj:`Node` with `key`"""
         node = self.head
+        if node is None:
+            return None
         if node.key == key:
             return node
         while (node):
@@ -45,10 +47,14 @@ class LinkedList:
 
     def _append(self, key, value):
         node = self.head
-        while (node.next):
-            node = node.next
-        node.next = Node(key, value)
-        return node.next
+        if node is None:
+            node = Node(key, value)
+            return node
+        else:
+            while (node.next):
+                node = node.next
+            node.next = Node(key, value)
+            return node.next
 
     def set(self, key, value):
         """Overwrite or append node value"""
@@ -79,23 +85,25 @@ class HashTable:
     """
     def __init__(self):
         # array of linked-lists
-        self.db = []
+        self._db = []
         # Map hash values to array indexes
-        self.hash_map = {}
+        self._hash_map = {}
+
+    def __repr__(self):
+        return f'HashTable obj <{len(self._hash_map)} key/val pairs>'
 
     def _get_list(self, index):
         """Return :obj:`LinkedList` or None"""
         try:
-            return self.db[index]
+            return self._db[index]
         except IndexError:
             return None
 
     def get(self, key):
         hash_key = to_hash(key)
-        print(self.hash_map)
-        if hash_key not in self.hash_map:
+        if hash_key not in self._hash_map:
             return None
-        index = self.hash_map[hash_key]
+        index = self._hash_map[hash_key]
         lst = self._get_list(index)
         if lst and lst.get(key):
             return lst.get(key).value
@@ -104,16 +112,16 @@ class HashTable:
         if key is None:
             return None
         hash_key = to_hash(key)
-        if hash_key in self.hash_map:
-            lst = self._get_list(index=self.hash_map[hash_key])
+        if hash_key in self._hash_map:
+            lst = self._get_list(index=self._hash_map[hash_key])
             node = lst.set(key, value)
         else:
             # Map hash to random index
-            index = gen_index(len(self.db)+1)
+            index = gen_index(len(self._db)+1)
             lst = self._get_list(index)
             if not lst:
-                self.db.append(LinkedList())
-                lst = self.db[-1]
+                self._db.append(LinkedList())
+                lst = self._db[-1]
             node = lst.set(key, value)
-            self.hash_map[hash_key] = index
+            self._hash_map[hash_key] = index
         return node

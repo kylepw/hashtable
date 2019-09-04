@@ -53,17 +53,15 @@ class TestHashTable(unittest.TestCase):
         lst1.head.next = Node('geee', 'bahhh')
         lst1.head.next.next = Node('mah', 'yo')
         lst1.head.next.next.next = Node('veloce', 123)
-        self.ht.db.append(lst1)
-        self.ht.hash_map.update([(to_hash(key), 0) for key in ('key', 'geee', 'mah', 'veloce')])
+        self.ht._db.append(lst1)
+        self.ht._hash_map.update([(to_hash(key), 0) for key in ('key', 'geee', 'mah', 'veloce')])
 
         lst2 = LinkedList(head=Node('man', {1, 2, 3}))
         lst2.head.next = Node('abacus', 'YES')
         lst2.head.next.next = Node('iphone', 'I do not know.')
         lst2.head.next.next.next = Node('monkey', 565.98)
-        self.ht.db.append(lst2)
-        self.ht.hash_map.update([(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')])
-        print(self.ht.db)
-        print(self.ht.hash_map)
+        self.ht._db.append(lst2)
+        self.ht._hash_map.update([(to_hash(key), 1) for key in ('man', 'abacus', 'iphone', 'monkey')])
 
     def test_set(self):
         self.assertIsNone(self.ht.set())
@@ -76,8 +74,14 @@ class TestHashTable(unittest.TestCase):
         self.ht.set('monkey', 'mammal')
         self.assertEqual(self.ht.get('monkey'), 'mammal')
 
+        t = HashTable()
+        t.set('hey', 'you')
+
     def test_get(self):
         self.assertIsNone(self.ht.get('ninjaturtles343'))
         self.assertEqual(self.ht.get('geee'), 'bahhh')
         self.assertEqual(self.ht.get('monkey'), 565.98)
         self.assertEqual(self.ht.get('iphone'), 'I do not know.')
+
+        t = HashTable()
+        self.assertIsNone(t.get('hey'))
