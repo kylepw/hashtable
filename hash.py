@@ -179,4 +179,4 @@ class Hashtable:
         if self._lists:
             for lst in self._lists:
                 keys.extend([node.key for node in lst if node])
-        return keys
+        return tuple(keys)
