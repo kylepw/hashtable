@@ -1,4 +1,5 @@
 from hash import Hashtable, LinkedList, Node, to_hash
+import random
 import unittest
 
 
@@ -117,6 +118,33 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(len(keys), 8)
 
         self.assertEqual(Hashtable().keys(), ())
+
+class TestHashTableWithBigData(unittest.TestCase):
+    def setUp(self):
+        self.ht = Hashtable()
+        self.keys = tuple(k for k in range(1000))
+        self.values = tuple(v for v in range(1000, 0, -1))
+        data = list(zip(self.keys, self.values))
+        for k, v in data:
+            self.ht.set(k, v)
+
+    def test_key_values(self):
+        self.assertEqual(len(self.ht.keys()), len(self.keys))
+        self.assertEqual(sorted(self.ht.keys()), sorted(self.keys))
+
+    def test_get(self):
+        for key in self.ht.keys():
+            self.assertIsNotNone(self.ht.get(key))
+
+    def test_set(self):
+        keys = random.sample(self.ht.keys(), 10)
+        new_values = tuple(random.sample(range(500, 1000), 10))
+        pairs = list(zip(keys, new_values))
+
+        self.assertNotEqual(self.ht.get(*keys), new_values)
+        for k, v in pairs:
+            self.ht.set(k, v)
+        self.assertEqual(self.ht.get(*keys), new_values)
 
 
 class TestUtilities(unittest.TestCase):
