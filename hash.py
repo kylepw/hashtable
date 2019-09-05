@@ -3,15 +3,15 @@
     ~~~~~~~
 
     Simple hash table implementation.
-    Based on: Cracking the Coding Interview, p.88
 
     >>> from hash import Hashtable
     >>> t = Hashtable()
-    >>> t.get('hey')
     >>> t.set('hey', 123)
     Node {hey: 123}
-    >>> t.get('hey')
-    123
+    >>> t.set(678, 456.5)
+    Node {678, 456.5}
+    >>> t.get('hey', 678)
+    (123, 456.5)
 
 """
 def to_hash(key, length=10):
