@@ -174,8 +174,7 @@ class Hashtable:
     def keys(self):
         """Return all key values in hash table"""
         keys = []
-        if self._buckets:
-            for lst in self._buckets:
-                if lst:
-                    keys.extend([node.key for node in lst if node])
+        indices = set(self._hash_map.values())
+        for i in indices:
+            keys.extend([node.key for node in self._buckets[i] if node])
         return tuple(keys)
