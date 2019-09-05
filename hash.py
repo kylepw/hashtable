@@ -48,7 +48,7 @@ class LinkedList:
     def __init__(self, head=None):
         # First node
         self.head = head
-        # Used for iteration
+        # Iteration placeholder
         self.current = self.head
 
     def __repr__(self):
@@ -85,7 +85,7 @@ class LinkedList:
             return node.next
 
     def get(self, key):
-        """Return :obj:`Node` with `key` key value"""
+        """Return :obj:`Node` with `key`"""
         node = self.head
         if node is None:
             return None
@@ -108,7 +108,7 @@ class LinkedList:
 
 
 class Hashtable:
-    """Represents simple hash table
+    """Simple hash table.
 
         `get` flow:
         - Compute 'key' hash value
@@ -136,7 +136,7 @@ class Hashtable:
         return f'Hashtable <{len(self._hash_map)} key/val pairs>'
 
     def _get_list(self, index):
-        """Return `LinkedList` obj at `index` or None"""
+        """Return `LinkedList` at `index` or None"""
         try:
             return self._buckets[index]
         except IndexError:
