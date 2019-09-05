@@ -114,10 +114,13 @@ class TestHashTable(unittest.TestCase):
 
     def test_keys(self):
         keys = self.ht.keys()
-        self.assertEqual(keys, ('key', 'geee', 'mah', 'veloce', 'man', 'abacus', 'iphone', 'monkey'))
+        self.assertEqual(
+            keys, ('key', 'geee', 'mah', 'veloce', 'man', 'abacus', 'iphone', 'monkey')
+        )
         self.assertEqual(len(keys), 8)
 
         self.assertEqual(Hashtable().keys(), ())
+
 
 class TestHashTableWithBigData(unittest.TestCase):
     def setUp(self):

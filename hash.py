@@ -12,8 +12,9 @@
     Node {678, 456.5}
     >>> t.get('hey', 678)
     (123, 456.5)
-
 """
+
+
 def to_hash(key, length=10):
     """Convert key to hash value.
 
